@@ -34,7 +34,10 @@ module.exports.routes = {
 
   '/': {
     view: 'app'
-  }
+  },
+
+  'post /sign-in': 'UserController.signIn',
+  'get /user': 'UserController.find',
 
   /***************************************************************************
   *                                                                          *
