@@ -3,6 +3,13 @@
 var assert = require('assert');
 
 describe('UserController', function () {
+  it('should redirect a guest user to the index page', function (done) {
+    sails.test.agent
+      .get('/user')
+      .expect(302)
+      .expect('location', '/', done);
+  });
+
   describe('#signIn()', function () {
     it('should authenticate a user', function (done) {
       sails.test.agent
@@ -25,11 +32,5 @@ describe('UserController', function () {
   });
 
   describe('#find()', function () {
-    it('should redirect a guest user to the index page', function (done) {
-      sails.test.agent
-        .get('/user')
-        .expect(302)
-        .expect('location', '/', done);
-    });
   });
 });
