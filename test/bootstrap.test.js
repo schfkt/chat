@@ -1,6 +1,6 @@
 var request = require('supertest');
 var sails = require('sails');
-var fixtrues = require('./fixtures');
+var fixtures = require('./fixtures');
 
 before(function(done) {
   sails.lift({}, function(err, server) {
