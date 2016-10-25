@@ -55,11 +55,11 @@ describe('UserController', () => {
     })
   });
 
-  // describe('#find()', function () {
-  //   it('should redirect a guest user to the index page', done => {
-  //     sails.test.agent
-  //       .get('/user')
-  //       .expect(403, done);
-  //   });
-  // });
+  describe('#find()', function () {
+    it('should return 403 for a guest user', done => {
+      sails.test.agent
+        .get('/user')
+        .expect(403, done);
+    });
+  });
 });

@@ -4,13 +4,9 @@ const request = require('supertest');
 const sails = require('sails');
 const fixtures = require('./fixtures');
 
-before(function (done) {
-  sails.lift({}, function (err, server) {
+before(done => {
+  sails.lift({}, (err, server) => {
     if (err) return done(err);
-
-    sails.test = {
-      agent: request.agent(sails.hooks.http.app)
-    };
 
     fixtures.setup()
       .then(done)
@@ -18,7 +14,13 @@ before(function (done) {
   });
 });
 
-after(function (done) {
+beforeEach(() => {
+  sails.test = {
+    agent: request.agent(sails.hooks.http.app)
+  };
+});
+
+after(done => {
   fixtures.teardown()
     .then(function () {
       sails.lower(done);
