@@ -1,14 +1,21 @@
 'use strict';
 
 var data = exports.data = {
-  user: {login: 'doge', password: 'suchsecure'}
+  user: {
+    login: 'doge',
+    password: 'suchsecure'
+  },
+  wrongUser: {
+    login: 'wrong-doge',
+    password: 'sowrongpwd'
+  }
 };
 
 exports.setup = function () {
   return new Promise(function (resolve, reject) {
     UserModel.findOrCreate(data.user)
       .then(function (newUser) {
-        fixtures.user = newUser;
+        data.user.id = newUser.id;
         resolve();
       })
       .catch(reject);

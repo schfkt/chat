@@ -1,22 +1,15 @@
-var request = require('supertest');
-var sails = require('sails');
-var fixtures = require('./fixtures');
+'use strict';
 
-before(function(done) {
-  sails.lift({}, function(err, server) {
+const request = require('supertest');
+const sails = require('sails');
+const fixtures = require('./fixtures');
+
+before(function (done) {
+  sails.lift({}, function (err, server) {
     if (err) return done(err);
 
     sails.test = {
       agent: request.agent(sails.hooks.http.app),
-      signIn: function (done) {
-        this.agent
-          .post('/sign-in')
-          .send({
-            login: fixtures.data.user.login,
-            password: fixtures.data.user.password
-          })
-          .expect(200, done);
-      },
       signOut: function (done) {
         this.agent
           .get('/sign-out')
@@ -24,12 +17,16 @@ before(function(done) {
           .expect('location', '/', done);
       }
     };
-    done(err, sails);
+
+    fixtures.setup()
+      .then(done)
+      .catch(done);
   });
 });
 
-after(function(done) {
-  fixtures.teardown().then(function () {
-    sails.lower(done);
-  });
+after(function (done) {
+  fixtures.teardown()
+    .then(function () {
+      sails.lower(done);
+    });
 });

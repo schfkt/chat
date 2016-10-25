@@ -18,6 +18,10 @@
 
 
 module.exports.policies = {
+  '*': 'sessionAuth',
 
-  '*': 'sessionAuth'
+  UserController: {
+    'signIn': true,
+    'signOut': true
+  }
 };

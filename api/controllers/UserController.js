@@ -1,17 +1,17 @@
 'use strict';
 
-/**
- * UserController
- *
- * @description :: Server-side logic for managing users
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
-
 module.exports = {
   signIn: function (req, res) {
-    return res.json({
-      todo: 'signin() is not implemented yet!'
-    });
+    let login = req.param('login');
+    let password = req.param('password');
+
+    UserModel.signIn(login, password)
+      .then(user => {
+        req.session.authenticated = true;
+        req.session.userId = user.id;
+        res.ok(user.toJSON());
+      })
+      .catch(res.badRequest);
   },
 
   singOut: function (req, res) {
