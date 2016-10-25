@@ -28,8 +28,10 @@ exports.setup = function () {
 
 exports.teardown = function () {
   return new Promise(function (resolve, reject) {
-    UserModel.destroy({id: data.user.id})
+    UserModel.destroy({login: data.user.login})
       .then(resolve)
       .catch(reject);
+  }).then(() => {
+    return UserModel.destroy({login: data.newUser.login});
   });
 };
