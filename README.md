@@ -1,3 +1,3 @@
-# chat
+# A simple node.js based chat app
 
-a [Sails](http://sailsjs.org) application
+[![Build Status](https://travis-ci.org/schfkt/chat.svg?branch=master)](https://travis-ci.org/schfkt/chat)
