@@ -34,9 +34,11 @@ module.exports = {
   },
 
   find: function (req, res) {
-    return res.json({
-      todo: 'find() is not implemented yet!'
-    });
+    UserModel.findOne({id: req.session.userId})
+      .then((user) => {
+        res.ok(user.toJSON());
+      })
+      .catch(res.badRequest);
   }
 };
 

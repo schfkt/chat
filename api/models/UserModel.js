@@ -3,7 +3,6 @@
 const bcrypt = require('bcrypt');
 
 module.exports = {
-
   attributes: {
     login : {
       type: 'string' ,
@@ -12,7 +11,6 @@ module.exports = {
 
     password: {
       type: 'string',
-      minLength: 6,
       required: true
     },
 
