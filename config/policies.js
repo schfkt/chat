@@ -22,6 +22,7 @@ module.exports.policies = {
 
   UserController: {
     'signIn': true,
-    'signOut': true
+    'signOut': true,
+    'signUp': true
   }
 };

@@ -55,5 +55,29 @@ module.exports = {
           throw new Error("User with this login doesn't exist");
         }
       });
+  },
+
+  signUp: function (login, password) {
+    return this.findOne({login: login})
+      .then(user => {
+        if (user) {
+          throw new Error('User with this login already exists');
+        } else {
+          return this.makeNewUser(login, password);
+        }
+      });
+  },
+
+  makeNewUser: function (login, password) {
+    return new Promise((resolve, reject) => {
+      this.create({login: login, password: password})
+        .exec((err, user) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(user);
+          }
+        });
+    });
   }
 };

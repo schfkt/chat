@@ -9,13 +9,7 @@ before(function (done) {
     if (err) return done(err);
 
     sails.test = {
-      agent: request.agent(sails.hooks.http.app),
-      signOut: function (done) {
-        this.agent
-          .get('/sign-out')
-          .expect(302)
-          .expect('location', '/', done);
-      }
+      agent: request.agent(sails.hooks.http.app)
     };
 
     fixtures.setup()

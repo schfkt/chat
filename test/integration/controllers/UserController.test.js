@@ -1,6 +1,5 @@
 'use strict';
 
-const assert = require('assert');
 const fixtures = require('../../fixtures');
 
 describe('UserController', () => {
@@ -37,16 +36,30 @@ describe('UserController', () => {
   });
 
   describe('#signOut()', () => {
+    it('should successuflly sign out a user', done => {
+      sails.test.agent
+        .post('/sign-out')
+        .expect(200, done);
+    })
   });
 
   describe('#signUp()', () => {
+    it('should successfully register a new user', done => {
+      sails.test.agent
+        .post('/sign-up')
+        .send({
+          login: fixtures.data.newUser.login,
+          password: fixtures.data.newUser.password
+        })
+        .expect(200, done);
+    })
   });
 
-  describe('#find()', function () {
-    it('should redirect a guest user to the index page', done => {
-      sails.test.agent
-        .get('/user')
-        .expect(403, done);
-    });
-  });
+  // describe('#find()', function () {
+  //   it('should redirect a guest user to the index page', done => {
+  //     sails.test.agent
+  //       .get('/user')
+  //       .expect(403, done);
+  //   });
+  // });
 });

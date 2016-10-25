@@ -8,6 +8,10 @@ var data = exports.data = {
   wrongUser: {
     login: 'wrong-doge',
     password: 'sowrongpwd'
+  },
+  newUser: {
+    login: 'new-doge',
+    password: 'muchnewpassword'
   }
 };
 
