@@ -1,74 +1,129 @@
 (function () {
   'use strict';
 
-  var App = window.App = {};
-
-  // Centralized Event Bus
-  App.EventBus = _.extend({}, Backbone.Events);
-
-  // Router
-  var Router = Backbone.Router.extend({
+  // AppRouter
+  var AppRouter = Backbone.Router.extend({
     routes: {
-      '': 'openDefaultChat',
-      'sign-up': 'signUp',
-      'sign-in': 'signIn'
+      '': 'default-chat',
+      'sign-up': 'sign-up',
+      'sign-in': 'sign-in'
     },
 
-    initialize: function () {
-      this.listenTo(App.EventBus, 'user:registration:success', this.openDefaultChat);
-      this.listenTo(App.EventBus, 'user:load:success', this.openDefaultChat);
-      this.listenTo(App.EventBus, 'user:load:fail', this.userLoadFail);
-    },
-
-    signUp: function () {
-      if (App.currentUser.isSignedId()) {
-        this.openDefaultChat();
-      } else {
-        new App.SignUpView();
-      }
-    },
-
-    signIn: function () {
-      if (App.currentUser.isSignedId()) {
-        this.openDefaultChat();
-      } else {
-        new App.SignInView();
-      }
-    },
-
-    openDefaultChat: function () {
+    defaultChatPage: function () {
       this.navigate('chats/default', {trigger: true});
     },
 
-    userLoadFail: function (data) {
-      if (data.status === 403) {
-        this.signIn();
-      } else {
-        this.error(data.responseText);
-      }
+    signUpPage: function () {
+      this.navigate('sign-up', {trigger: true});
+    },
+
+    signInPage: function () {
+      this.navigate('sign-in', {trigger: true});
     }
   });
 
-  App.Router = new Router();
+  // App
+  window.App = {
+    eventBus: _.extend({}, Backbone.Events),
 
-  // Initialization logic
-  App.run = function () {
-    this.currentUser = new this.UserModel();
+    router: new AppRouter(),
 
-    var self = this;
-    this.currentUser.fetch()
-      .done(function () {
-        self.Router.openDefaultChat();
-        Backbone.history.start();
-      })
-      .fail(function () {
-        self.Router.signIn();
-        Backbone.history.start();
-      });
+    init: function () {
+      this.container = $('#app-container');
+      this.initEventBus();
+      this.initRouter();
+      this.initNotifier();
+      this.initUser();
+    },
+
+    initEventBus: function () {
+      this.eventBus.on('error', this.showError, this);
+      this.eventBus.on('sign-up', this.processNewUser, this);
+      this.eventBus.on('sign-in', this.processExistingUser, this);
+    },
+
+    initUser: function () {
+      this.currentUser = new this.UserModel();
+      this.currentUser.fetch()
+        .always(function () {
+          Backbone.history.start();
+        });
+    },
+
+    initRouter: function () {
+      this.router.on('route:default-chat', this.openDefaultChat, this);
+      this.router.on('route:sign-in', this.openSignInPage, this);
+      this.router.on('route:sign-up', this.openSignUpPage, this);
+    },
+
+    initNotifier: function () {
+      humane.timeout = 5000;
+      humane.clickToClose = true;
+    },
+
+    openDefaultChat: function () {
+      if (this.isSignedIn()) {
+        console.log('todo: default chat');
+      } else {
+        this.router.signInPage();
+      }
+    },
+
+    openSignInPage: function () {
+      if (this.isSignedIn()) {
+        this.router.defaultChatPage();
+      } else {
+        this.switchView(this.SignInView);
+      }
+    },
+
+    openSignUpPage: function () {
+      if (this.isSignedIn()) {
+        this.router.defaultChatPage();
+      } else {
+        this.switchView(this.SignUpView);
+      }
+    },
+
+    isSignedIn: function () {
+      return this.currentUser.isSignedId();
+    },
+
+    switchView: function (ViewClass) {
+      if (this.currentView) this.currentView.cleanup();
+      this.currentView = new ViewClass();
+      this.container.empty();
+      this.container.append(this.currentView.$el);
+    },
+
+    showError: function (jqXHR) {
+      var message = (jqXHR.responseJSON && jqXHR.responseJSON.message) ||
+        jqXHR.status ||
+        'Something went wrong. Try to reload the page';
+      this.logError(message);
+    },
+
+    processNewUser: function () {
+      this.logSuccess('You were successfully signed up. Start chatting!');
+      this.router.defaultChatPage();
+    },
+
+    processExistingUser: function () {
+      this.logSuccess('You were successfully signed in. Start chatting!');
+      this.router.defaultChatPage();
+    },
+
+    logError: function (message) {
+      humane.log(message, {addnCls: 'humane-jackedup-error'});
+    },
+
+    logSuccess: function (message) {
+      humane.log(message, {addnCls: 'humane-jackedup-success'});
+    }
   };
 
   // Start the App
   $(function () {
-    App.run();
+    App.init();
   });
 })();
