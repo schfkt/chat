@@ -2,7 +2,7 @@
 --------------------------------------------------------- */
 .chat-view-message {
   display: block;
-  padding: 2px 10px;
+  padding: 10px 12px;
   border-bottom: 1px solid #ccc;
   background: #fff;
 }
@@ -17,23 +17,13 @@
   clear: both;
 }
 
-.chat-view-message__ts {
-  float: left;
-  width: 145px;
-  margin-right: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.chat-view-message__heading {
+  opacity: 0.6;
+  margin-bottom: 2px;
 }
 
 .chat-view-message__author {
-  float: left;
   font-weight: bold;
-  width: 70px;
-  margin-right: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .chat-view-message__text {

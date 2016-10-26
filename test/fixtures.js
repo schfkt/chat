@@ -17,7 +17,7 @@ var data = exports.data = {
 
 exports.setup = function () {
   return new Promise(function (resolve, reject) {
-    UserModel.findOrCreate(data.user)
+    User.findOrCreate(data.user)
       .then(function (newUser) {
         data.user.id = newUser.id;
         resolve();
@@ -28,10 +28,10 @@ exports.setup = function () {
 
 exports.teardown = function () {
   return new Promise(function (resolve, reject) {
-    UserModel.destroy({login: data.user.login})
+    User.destroy({login: data.user.login})
       .then(resolve)
       .catch(reject);
   }).then(() => {
-    return UserModel.destroy({login: data.newUser.login});
+    return User.destroy({login: data.newUser.login});
   });
 };

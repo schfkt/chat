@@ -1,9 +1,18 @@
 module.exports = {
   index: function (req, res) {
-    res.json({omg: 'lol'});
+    let from = req.param('from');
+
+    Message.loadHistory()
+      .then(res.ok)
+      .catch(res.serverError);
   },
 
   create: function (req, res) {
-    res.json({omg: 'lol'});
+    let text = req.param('text');
+    let userId = req.session.userId;
+
+    Message.create({text: text, author: userId})
+      .then(res.ok)
+      .catch(res.serverError);
   }
 };

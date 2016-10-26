@@ -14,11 +14,6 @@ module.exports = {
       required: true
     },
 
-    messages: {
-      collection: 'message',
-      via: 'author'
-    },
-
     toJSON: function () {
       let obj = this.toObject();
       delete obj.password;
