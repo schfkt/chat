@@ -9,7 +9,7 @@
 
     events: {
       'click [data-send]': 'onSend',
-      'keydown [data-message]': 'sendOnEnter'
+      'keydown [data-new-message]': 'sendOnEnter'
     },
 
     initialize: function () {
@@ -17,27 +17,39 @@
       this.loadMessages();
     },
 
+    cacheElements: function () {
+      this.$newMessage = this.$('[data-new-message]');
+      this.$container = this.$('[data-messages]');
+      this.$containerWrap = this.$('[data-messages-wrap]');
+    },
+
     loadMessages: function () {
       this.messages = new App.MessagesCollection();
       this.listenTo(this.messages, 'reset', this.renderMessages);
-      this.messages.fetch({reset: true});
+      this.listenTo(this.messages, 'add', this.addMessage);
+      this.messages.fetch();
     },
 
     render: function () {
       var template = this.templates.index({});
       this.$el.html(template);
+      this.cacheElements();
     },
 
     renderMessages: function () {
-      var $container = this.$('[data-messages]');
-      $container.empty();
+      this.$container.empty();
+      this.messages.each(this.renderMessage, this);
+      this.scrollToBottom(this.$containerWrap);
+    },
 
-      var messageTemplate = this.templates.message;
-      this.messages.each(function (message) {
-        $container.append(messageTemplate(message.attributes));
-      });
+    renderMessage: function (message) {
+      var template = this.templates.message(message.attributes);
+      this.$container.append(template);
+    },
 
-      this.scrollToBottom(this.$('[data-messages-wrap]'));
+    addMessage: function (message) {
+      this.renderMessage(message);
+      this.scrollToBottom(this.$containerWrap);
     },
 
     sendOnEnter: function (event) {
@@ -48,21 +60,16 @@
     },
 
     onSend: function () {
-      var message = this.$('[data-message]').val();
-      if (message.length) {
-        var $send = this.$('[data-send]');
-        $send.button('loading');
-        var self = this;
-        this.messages.sendNewMessage(message).done(function () {
-          self.$('[data-message]').val('');
-        }).always(function () {
-          $send.button('reset');
-        });
+      var text = this.$newMessage.val();
+      if (text.length) {
+        this.messages.sendNewMessage(text);
+        this.$newMessage.val('');
       }
     },
 
     cleanup: function () {
       this.stopListening();
+      this.messages.cleanup();
       this.remove();
     },
 

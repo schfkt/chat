@@ -1,9 +1,12 @@
+'use strict';
+
 module.exports = {
   index: function (req, res) {
-    let from = req.param('from');
-
     Message.loadHistory()
-      .then(res.ok)
+      .then(messages => {
+        sails.sockets.join(req, sails.config.app.messagesRoomName);
+        res.ok(messages);
+      })
       .catch(res.serverError);
   },
 
@@ -12,7 +15,13 @@ module.exports = {
     let userId = req.session.userId;
 
     Message.create({text: text, author: userId})
-      .then(res.ok)
+      .then(newMessage => {
+        sails.sockets.broadcast(
+          sails.config.app.messagesRoomName,
+          newMessage.toJSON()
+        );
+        res.ok();
+      })
       .catch(res.serverError);
   }
 };

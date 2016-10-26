@@ -25,5 +25,11 @@ module.exports.policies = {
     'signIn': true,
     'signOut': true,
     'signUp': true
+  },
+
+  MessagesController: {
+    '*': 'sessionAuth',
+    'index': ['sessionAuth', 'socketConnection'],
+    'create': ['sessionAuth', 'socketConnection']
   }
 };
