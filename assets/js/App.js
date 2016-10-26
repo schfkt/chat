@@ -4,17 +4,13 @@
   // AppRouter
   var AppRouter = Backbone.Router.extend({
     routes: {
-      '': 'default-chat',
+      '': 'chat',
       'sign-up': 'sign-up',
       'sign-in': 'sign-in'
     },
 
-    defaultChatPage: function () {
-      this.navigate('chats/default', {trigger: true});
-    },
-
-    signUpPage: function () {
-      this.navigate('sign-up', {trigger: true});
+    chatPage: function () {
+      this.navigate('chat', {trigger: true});
     },
 
     signInPage: function () {
@@ -51,7 +47,7 @@
     },
 
     initRouter: function () {
-      this.router.on('route:default-chat', this.openDefaultChat, this);
+      this.router.on('route:chat', this.openChat, this);
       this.router.on('route:sign-in', this.openSignInPage, this);
       this.router.on('route:sign-up', this.openSignUpPage, this);
     },
@@ -61,7 +57,7 @@
       humane.clickToClose = true;
     },
 
-    openDefaultChat: function () {
+    openChat: function () {
       if (this.isSignedIn()) {
         console.log('todo: default chat');
       } else {
@@ -71,7 +67,7 @@
 
     openSignInPage: function () {
       if (this.isSignedIn()) {
-        this.router.defaultChatPage();
+        this.router.chatPage();
       } else {
         this.switchView(this.SignInView);
       }
@@ -79,7 +75,7 @@
 
     openSignUpPage: function () {
       if (this.isSignedIn()) {
-        this.router.defaultChatPage();
+        this.router.chatPage();
       } else {
         this.switchView(this.SignUpView);
       }
@@ -105,12 +101,12 @@
 
     processNewUser: function () {
       this.logSuccess('You were successfully signed up. Start chatting!');
-      this.router.defaultChatPage();
+      this.router.chatPage();
     },
 
     processExistingUser: function () {
       this.logSuccess('You were successfully signed in. Start chatting!');
-      this.router.defaultChatPage();
+      this.router.chatPage();
     },
 
     logError: function (message) {
