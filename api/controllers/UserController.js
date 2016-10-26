@@ -7,10 +7,7 @@ module.exports = {
 
     User.signIn(login, password)
       .then(user => {
-        // todo: refactor to a method
-        req.session.authenticated = true;
-        req.session.userId = user.id;
-        res.ok(user.toJSON());
+        this.authenticate(req, res, user);
       })
       .catch(res.badRequest);
   },
@@ -27,9 +24,7 @@ module.exports = {
 
     User.signUp(login, password)
       .then(user => {
-        req.session.authenticated = true;
-        req.session.userId = user.id;
-        res.ok(user.toJSON());
+        this.authenticate(req, res, user);
       })
       .catch(res.badRequest);
   },
@@ -40,6 +35,12 @@ module.exports = {
         res.ok(user.toJSON());
       })
       .catch(res.badRequest);
+  },
+
+  authenticate: function (req, res, user) {
+    req.session.authenticated = true;
+    req.session.userId = user.id;
+    res.ok(user.toJSON());
   }
 };
 
