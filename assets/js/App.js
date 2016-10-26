@@ -3,18 +3,21 @@
 
   var App = window.App = {};
 
-  // Centralized event bus
+  // Centralized Event Bus
   App.EventBus = _.extend({}, Backbone.Events);
 
   // Router
   var Router = Backbone.Router.extend({
     routes: {
-      'sign-up': 'signUp'
+      '': 'openDefaultChat',
+      'sign-up': 'signUp',
+      'sign-in': 'signIn'
     },
 
     initialize: function () {
       this.listenTo(App.EventBus, 'user:registration:success', this.openDefaultChat);
-      this.listenTo(App.EventBus, 'user:loaded', this.openDefaultChat);
+      this.listenTo(App.EventBus, 'user:load:success', this.openDefaultChat);
+      this.listenTo(App.EventBus, 'user:load:fail', this.userLoadFail);
     },
 
     signUp: function () {
@@ -25,18 +28,47 @@
       }
     },
 
+    signIn: function () {
+      if (App.currentUser.isSignedId()) {
+        this.openDefaultChat();
+      } else {
+        new App.SignInView();
+      }
+    },
+
     openDefaultChat: function () {
       this.navigate('chats/default', {trigger: true});
+    },
+
+    userLoadFail: function (data) {
+      if (data.status === 403) {
+        this.signIn();
+      } else {
+        this.error(data.responseText);
+      }
     }
   });
 
   App.Router = new Router();
 
-  // Load the user as soon as we load the page and start the App
+  // Initialization logic
+  App.run = function () {
+    this.currentUser = new this.UserModel();
+
+    var self = this;
+    this.currentUser.fetch()
+      .done(function () {
+        self.Router.openDefaultChat();
+        Backbone.history.start();
+      })
+      .fail(function () {
+        self.Router.signIn();
+        Backbone.history.start();
+      });
+  };
+
+  // Start the App
   $(function () {
-    App.currentUser = new App.UserModel();
-    App.EventBus.once('user:loaded', function () {
-      Backbone.history.start();
-    });
+    App.run();
   });
 })();

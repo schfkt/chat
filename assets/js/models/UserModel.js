@@ -8,12 +8,6 @@
       signUp: '/sign-up'
     },
 
-    initialize: function () {
-      this.fetch().always(function () {
-        App.EventBus.trigger('user:loaded');
-      });
-    },
-
     signUp: function (login, password) {
       var self = this;
 
@@ -23,8 +17,8 @@
       ).done(function (result) {
         self.set(result);
         App.EventBus.trigger('user:registration:success');
-      }).fail(function (jqXhr, textStatus) {
-        App.EventBus.trigger('user:registration:fail');
+      }).fail(function (jqXhr) {
+        App.EventBus.trigger('user:registration:fail', jqXhr.responseJSON);
       });
     },
 
