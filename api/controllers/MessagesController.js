@@ -11,10 +11,10 @@ module.exports = {
   },
 
   create: function (req, res) {
-    let text = req.param('text');
     let userId = req.session.userId;
+    let text = req.param('text');
 
-    Message.create({text: text, author: userId})
+    Message.makeNewMessage(userId, text)
       .then(newMessage => {
         sails.sockets.broadcast(
           sails.config.app.messagesRoomName,
