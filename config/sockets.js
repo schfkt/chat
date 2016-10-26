@@ -122,10 +122,20 @@ module.exports.sockets = {
   * disconnects                                                              *
   *                                                                          *
   ***************************************************************************/
-  // afterDisconnect: function(session, socket, cb) {
-  //   // By default: do nothing.
-  //   return cb();
-  // },
+  afterDisconnect: function(session, socket, cb) {
+    // Notify about disconnected user
+    if (sails.connectedUsers == null) {
+      sails.connectedUsers = new Map();
+    }
+    sails.connectedUsers.delete(session.userId);
+    sails.sockets.broadcast(
+      sails.config.app.socketIoRoom,
+      'people',
+      Array.from(sails.connectedUsers.values())
+    );
+
+    return cb();
+  },
 
   /***************************************************************************
   *                                                                          *

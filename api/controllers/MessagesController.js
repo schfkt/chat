@@ -4,7 +4,20 @@ module.exports = {
   index: function (req, res) {
     Message.loadHistory()
       .then(messages => {
-        sails.sockets.join(req, sails.config.app.messagesRoomName);
+        sails.sockets.join(req, sails.config.app.socketIoRoom);
+
+        if (sails.connectedUsers == null) {
+          sails.connectedUsers = new Map();
+        }
+        sails.connectedUsers.set(req.session.userId, {
+          id: req.session.userId,
+          login: req.session.login
+        });
+        sails.sockets.broadcast(
+          sails.config.app.socketIoRoom,
+          'people',
+          Array.from(sails.connectedUsers.values())
+        );
         res.ok(messages);
       })
       .catch(res.serverError);
@@ -17,7 +30,8 @@ module.exports = {
     Message.makeNewMessage(userId, text)
       .then(newMessage => {
         sails.sockets.broadcast(
-          sails.config.app.messagesRoomName,
+          sails.config.app.socketIoRoom,
+          'newMessage',
           newMessage.toJSON()
         );
         res.ok();

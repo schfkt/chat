@@ -5,6 +5,7 @@
     templates: {
       index: JST['assets/templates/ChatView/index.html'],
       message: JST['assets/templates/ChatView/message.html'],
+      people: JST['assets/templates/ChatView/people.html']
     },
 
     events: {
@@ -14,13 +15,16 @@
 
     initialize: function () {
       this.render();
+      this.loadPeople();
       this.loadMessages();
     },
 
     cacheElements: function () {
       this.$newMessage = this.$('[data-new-message]');
-      this.$container = this.$('[data-messages]');
-      this.$containerWrap = this.$('[data-messages-wrap]');
+      this.$messagesContainer = this.$('[data-messages]');
+      this.$messagesContainerWrap = this.$('[data-messages-wrap]');
+      this.$peopleContainer = this.$('[data-people]');
+      this.$peopleContainerWrap = this.$('[data-people-wrap]');
     },
 
     loadMessages: function () {
@@ -30,6 +34,11 @@
       this.messages.fetch();
     },
 
+    loadPeople: function () {
+      this.people = new App.PeopleCollection();
+      this.listenTo(this.people, 'reset', this.renderPeople);
+    },
+
     render: function () {
       var template = this.templates.index({});
       this.$el.html(template);
@@ -37,19 +46,30 @@
     },
 
     renderMessages: function () {
-      this.$container.empty();
+      this.$messagesContainer.empty();
       this.messages.each(this.renderMessage, this);
-      this.scrollToBottom(this.$containerWrap);
+      this.scrollToBottom(this.$messagesContainerWrap);
     },
 
     renderMessage: function (message) {
       var template = this.templates.message(message.attributes);
-      this.$container.append(template);
+      this.$messagesContainer.append(template);
     },
 
     addMessage: function (message) {
       this.renderMessage(message);
-      this.scrollToBottom(this.$containerWrap);
+      this.scrollToBottom(this.$messagesContainerWrap);
+    },
+
+    renderPeople: function () {
+      this.$peopleContainer.empty();
+      this.people.each(this.renderSinglePeople, this);
+      this.scrollToBottom(this.$peopleContainerWrap);
+    },
+
+    renderSinglePeople: function (people) {
+      var template = this.templates.people(people.attributes);
+      this.$peopleContainer.append(template);
     },
 
     sendOnEnter: function (event) {

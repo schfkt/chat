@@ -23,14 +23,14 @@
 
     listenForMessages: function () {
       var self = this;
-      io.socket.on('message', function (data) {
+      io.socket.on('newMessage', function (data) {
         var model = new self.model(data, {parse: true});
         self.add(model);
       });
     },
 
     cleanup: function () {
-      io.socket.off('message');
+      io.socket.off('newMessage');
     }
   });
 })(App);

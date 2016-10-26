@@ -14,7 +14,8 @@ module.exports = {
 
   signOut: function (req, res) {
     req.session.authenticated = false;
-    delete req.session;
+    delete req.session.userId;
+    delete req.session.login;
     res.ok();
   },
 
@@ -40,6 +41,7 @@ module.exports = {
   authenticate: function (req, res, user) {
     req.session.authenticated = true;
     req.session.userId = user.id;
+    req.session.login = user.login;
     res.ok(user.toJSON());
   }
 };
