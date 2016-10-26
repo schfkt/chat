@@ -12,7 +12,6 @@
       var self = this;
       io.socket.on('people', function (data) {
         self.reset(data);
-        console.log(data);
       });
     },
 

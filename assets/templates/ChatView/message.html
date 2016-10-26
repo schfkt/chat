@@ -1,4 +1,4 @@
-<div class="chat-view-message">
+<div class="chat-view-message <%- isYou ? 'chat-view-message--you' : '' %>">
   <div class="chat-view-message__heading">
     <span title="<%- createdAtHumanized %>" data-toggle="tooltip">
       <%- createdAtHumanized %>

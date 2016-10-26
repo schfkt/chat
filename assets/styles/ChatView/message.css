@@ -7,6 +7,10 @@
   background: #fff;
 }
 
+.chat-view-message--you {
+  background-color: #fff9ed;
+}
+
 .chat-view-message:last-child {
   border-bottom: none;
 }
@@ -24,6 +28,10 @@
 
 .chat-view-message__author {
   font-weight: bold;
+}
+
+.chat-view-message--you .chat-view-message__author:after {
+  content: ' (you)';
 }
 
 .chat-view-message__text {
