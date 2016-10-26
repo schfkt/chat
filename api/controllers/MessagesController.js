@@ -2,25 +2,12 @@
 
 module.exports = {
   index: function (req, res) {
-    Message.loadHistory()
-      .then(messages => {
-        sails.sockets.join(req, sails.config.app.socketIoRoom);
-
-        if (sails.connectedUsers == null) {
-          sails.connectedUsers = new Map();
-        }
-        sails.connectedUsers.set(req.session.userId, {
-          id: req.session.userId,
-          login: req.session.login
-        });
-        sails.sockets.broadcast(
-          sails.config.app.socketIoRoom,
-          'people',
-          Array.from(sails.connectedUsers.values())
-        );
+    sails.sockets.join(req, sails.config.app.socketIoRoom);
+    sails.peopleStorage.add(req.session.login).then(() => {
+      return Message.loadHistory().then(messages => {
         res.ok(messages);
-      })
-      .catch(res.serverError);
+      });
+    }).catch(res.serverError);
   },
 
   create: function (req, res) {

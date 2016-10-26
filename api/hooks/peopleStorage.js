@@ -18,6 +18,8 @@ module.exports = function (sails) {
         });
       }).then(() => {
         return this.getAll();
+      }).then(() => {
+        this.broadcast();
       });
     }
 
@@ -29,6 +31,8 @@ module.exports = function (sails) {
         });
       }).then(() => {
         return this.getAll();
+      }).then(() => {
+        this.broadcast();
       });
     }
 
@@ -43,6 +47,18 @@ module.exports = function (sails) {
           }
         });
       });
+    }
+
+    broadcast() {
+      let data = this.data.map(el => {
+        return {login: el};
+      });
+
+      sails.sockets.broadcast(
+        sails.config.app.socketIoRoom,
+        'people',
+        data
+      );
     }
   }
 

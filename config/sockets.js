@@ -123,18 +123,9 @@ module.exports.sockets = {
   *                                                                          *
   ***************************************************************************/
   afterDisconnect: function(session, socket, cb) {
-    // Notify about disconnected user
-    if (sails.connectedUsers == null) {
-      sails.connectedUsers = new Map();
-    }
-    sails.connectedUsers.delete(session.userId);
-    sails.sockets.broadcast(
-      sails.config.app.socketIoRoom,
-      'people',
-      Array.from(sails.connectedUsers.values())
-    );
-
-    return cb();
+    sails.peopleStorage.remove(session.login)
+      .then(cb)
+      .catch(cb);
   },
 
   /***************************************************************************
