@@ -5,6 +5,7 @@
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'chat',
+      'chat': 'chat',
       'sign-up': 'sign-up',
       'sign-in': 'sign-in'
     },
@@ -59,7 +60,7 @@
 
     openChat: function () {
       if (this.isSignedIn()) {
-        console.log('todo: default chat');
+        this.switchView(this.ChatView);
       } else {
         this.router.signInPage();
       }

@@ -14,11 +14,18 @@ module.exports = {
       required: true
     },
 
+    messages: {
+      collection: 'message',
+      via: 'author'
+    },
+
     toJSON: function () {
       let obj = this.toObject();
       delete obj.password;
       return obj;
     },
+
+    autoUpdatedAt: false,
 
     verifyPassword: function (password) {
       return new Promise((resolve, reject) => {
