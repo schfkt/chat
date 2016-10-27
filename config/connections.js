@@ -32,6 +32,6 @@ module.exports.connections = {
 
   mongodbProd: {
     adapter: 'sails-mongo',
-    url: process.env.MONGO_URL
+    url: "mongodb://doge:wowsuchpassw0rd@ds048719.mlab.com:48719/sails"
   },
 };
