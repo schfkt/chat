@@ -2,17 +2,25 @@
 
 [![Build Status](https://travis-ci.org/schfkt/chat.svg?branch=master)](https://travis-ci.org/schfkt/chat)
 
-# Demo
+## Table of Content
+
+* [Demo](#demo)
+* [Installation](#installation)
+* [Tests](#tests)
+* [Deployment to production](#deployment-to-production)
+* [Screenshots](#screenshots)
+
+## Demo
 
 https://kochat.herokuapp.com/
 
-# Installation
+## Installation
 
 This application requires:
 
-- Node.js (6.x)
-- Redis (localhost:6379)
-- MongoDB (localhost:27017)
+* Node.js (6.x)
+* Redis (localhost:6379)
+* MongoDB (localhost:27017)
 
 First, install the dependencies:
 
@@ -28,7 +36,7 @@ npm start
 
 Open http://localhost:1337/ in a browser to see it in action.
 
-# Tests
+## Tests
 
 Backend code is covered with tests (partially). You can run them locally:
 
@@ -38,7 +46,17 @@ npm run test
 
 Or if you are too lazy to do so, you can just check [Travis CI page](https://travis-ci.org/schfkt/chat) :)
 
-# Screenshots
+## Deployment to production
+
+The App is completely ready for deployment on many servers. The following environment variables are required to be set:
+
+* `NODE_ENV=production` – run the app in production environment
+* `MONGO_URL` – connection URI for MongoDB
+* `REDIS_HOST` – hostname for redis
+* `REDIS_PORT` – port for redis
+* `REDIS_PASSWORD` – password for redis
+
+## Screenshots
 
 Here is how it looks like:
 
