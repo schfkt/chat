@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/schfkt/chat.svg?branch=master)](https://travis-ci.org/schfkt/chat)
 
+# Demo
+
+https://kochat.herokuapp.com/
+
 # Installation
 
 This application requires:
@@ -22,7 +26,7 @@ And then run the App:
 npm start
 ```
 
-Open http://localhost:1337 in a browser to see it in action.
+Open http://localhost:1337/ in a browser to see it in action.
 
 # Tests
 
