@@ -38,7 +38,7 @@ module.exports = {
   },
 
   beforeCreate: function (values, cb) {
-    bcrypt.hash(values.password, 10, (err, hash) => {
+    bcrypt.hash(values.password, sails.config.app.bcryptSaltRounds, (err, hash) => {
       if (err) return cb(err);
 
       values.password = hash;

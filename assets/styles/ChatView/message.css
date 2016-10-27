@@ -33,7 +33,3 @@
 .chat-view-message--you .chat-view-message__author:after {
   content: ' (you)';
 }
-
-.chat-view-message__text {
-
-}

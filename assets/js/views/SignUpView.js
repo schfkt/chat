@@ -17,7 +17,14 @@
 
     render: function () {
       var index = this.templates.index({});
-      this.$el.html(index)
+      this.$el.html(index);
+      this.cacheElements();
+    },
+
+    cacheElements: function () {
+      this.$login = this.$('[data-login]');
+      this.$password = this.$('[data-password]');
+      this.$submit = this.$('[data-submit]');
     },
 
     cleanup: function () {
@@ -26,13 +33,13 @@
     },
 
     onFormSubmit: function () {
-      var login = this.$('[data-login]').val();
-      var password = this.$('[data-password]').val();
-      var $submit = this.$('[data-submit]');
-      $submit.button('loading');
+      var login = this.$login.val();
+      var password = this.$password.val();
+      this.$submit.button('loading');
 
+      var self = this;
       this.model.signUp(login, password).always(function () {
-        $submit.button('reset');
+        self.$submit.button('reset');
       });
 
       return false;

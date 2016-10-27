@@ -4,9 +4,9 @@ module.exports = {
   index: function (req, res) {
     sails.sockets.join(req, sails.config.app.socketIoRoom);
     sails.peopleStorage.add(req.session.login).then(() => {
-      return Message.loadHistory().then(messages => {
-        res.ok(messages);
-      });
+      return Message.loadHistory();
+    }).then(messages => {
+      res.ok(messages);
     }).catch(res.serverError);
   },
 

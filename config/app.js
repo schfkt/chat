@@ -8,5 +8,7 @@ module.exports.app = {
     key: 'sails:peopleStorage',
     host: '127.0.0.1',
     port: 6379
-  }
+  },
+
+  bcryptSaltRounds: 10
 };

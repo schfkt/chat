@@ -25,7 +25,7 @@ module.exports = {
 
   makeNewMessage: function (userId, text) {
     return this.create({author: userId, text: text})
-      .then((model) => {
+      .then(model => {
         return this.populateSingleMessage(model.id)
       });
   },
