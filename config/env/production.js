@@ -11,6 +11,13 @@
  */
 
 module.exports = {
+  connections: {
+    mongodbProd: {
+      adapter: 'sails-mongo',
+      url: process.env.MONGO_URL
+    }
+  },
+
   models: {
     connection: 'mongodbProd'
   },

@@ -22,16 +22,5 @@
 module.exports.connections = {
   localDiskDb: {
     adapter: 'sails-disk'
-  },
-
-  localMongodbServer: {
-    adapter: 'sails-mongo',
-    host: 'localhost',
-    port: 27017,
-  },
-
-  mongodbProd: {
-    adapter: 'sails-mongo',
-    url: "mongodb://doge:wowsuchpassw0rd@ds048719.mlab.com:48719/sails"
-  },
+  }
 };
