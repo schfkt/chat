@@ -29,10 +29,4 @@ module.exports.connections = {
     host: 'localhost',
     port: 27017,
   },
-
-  // Just a placeholder for production config
-  // Actual values are set from the ENV variables
-  mongodb: {
-    adapter: 'sails-mongo'
-  }
 };
