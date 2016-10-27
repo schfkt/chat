@@ -29,4 +29,10 @@ module.exports.connections = {
     host: 'localhost',
     port: 27017,
   },
+
+  mongodbProd: {
+    adapter: 'sails-mongo',
+    host: process.env.MONGODB_HOST,
+    port: process.env.MONGODB_PORT
+  },
 };

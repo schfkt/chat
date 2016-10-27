@@ -22,9 +22,6 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
-console.log('---------- DEBUG');
-console.dir(process.env);
-
 // Ensure a "sails" can be located:
 (function() {
   var sails;

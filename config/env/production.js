@@ -11,16 +11,8 @@
  */
 
 module.exports = {
-  connections: {
-    mongodb: {
-      adapter: 'sails-mongo',
-      host: process.env.MONGODB_HOST,
-      port: process.env.MONGODB_PORT
-    },
-  },
-
   models: {
-    connection: 'mongodb'
+    connection: 'mongodbProd'
   },
 
   session: {
