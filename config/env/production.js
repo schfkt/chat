@@ -23,5 +23,21 @@ module.exports = {
     connection: 'mongodb'
   },
 
-  port: 80,
+  session: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    ttl: 30 * 86400,
+    pass: process.env.REDIS_PASSWORD
+  },
+
+  app: {
+    peopleStorage: {
+      key: 'sails:peopleStorage',
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      password: process.env.REDIS_PASSWORD
+    }
+  },
+
+  port: 80
 };
