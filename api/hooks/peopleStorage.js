@@ -6,7 +6,9 @@ module.exports = function (sails) {
     constructor(callback) {
       this.data = [];
       this.config = sails.config.app.peopleStorage;
-      this.redis = redis.createClient(this.config.port, this.config.host);
+      this.redis = redis.createClient(this.config.port, this.config.host, {
+        password: this.config.password
+      });
       this.redis.on('connect', callback);
     }
 
